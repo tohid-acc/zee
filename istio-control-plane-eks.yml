@@ -1,0 +1,28 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioControlPlane
+spec:
+  profile: default
+  values:
+    meshConfig:
+      disablePolicyChecks: false
+      # File address for the proxy access log (e.g. /dev/stdout).
+      accessLogFile: "/dev/stdout"
+      # Set the default behavior of the sidecar for handling outbound traffic from the application
+      outboundTrafficPolicy:
+        mode: "ALLOW_ANY"
+      # Enable mutual TLS automatically for service to service communication within the mesh
+      enableAutoMtls: false
+      disablePolicyChecks: false
+    gateways:
+      # Enable egress gateway
+      istio-egressgateway:
+        enabled: true
+        autoscaleEnabled: true
+      # Enable Ingress gateway
+      istio-ingressgateway:
+        enabled: true
+        autoscaleEnabled: true
+    global:
+      # Ensure that the Istio pods are only scheduled to run on Linux nodes
+      defaultNodeSelector:
+        beta.kubernetes.io/os: linux

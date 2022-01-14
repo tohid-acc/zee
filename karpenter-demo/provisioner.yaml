@@ -1,0 +1,17 @@
+apiVersion: karpenter.sh/v1alpha5
+kind: Provisioner
+metadata:
+  name: default
+spec:
+  requirements:
+    - key: "topology.kubernetes.io/zone"
+      operator: In
+      values: ["us-west-1a", "us-west-1b"]
+    - key: "karpenter.sh/capacity-type" # If not included, the webhook for the AWS cloud provider will default to on-demand
+      operator: In
+      values: ["on-demand"]
+  provider:
+    instanceProfile: EC2roleforSSM
+    tags:
+      accountingEC2Tag: KarpenterDevEnvironmentEC2
+  ttlSecondsAfterEmpty: 30

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: zee
+  name: zee5poc
+  labels:
+    app: zee5poc
+    tier: backendservice
+spec:
+  replicas: 5
+  template:
+    metadata:
+      name: zee5poc-pod
+      labels:
+        app: zee5poc
+    spec:
+      containers:
+        - name: zee5poc
+          image: ghcr.io/zee5-poc/zee5-pwa:master
+          resources:
+            requests:
+              memory: "1.5Gi"
+              cpu: 1 
+          imagePullPolicy: Always
+      imagePullSecrets:
+        - name: git-creds 
+  selector:
+    matchLabels:
+        app: zee5poc
